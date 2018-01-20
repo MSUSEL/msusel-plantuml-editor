@@ -3,8 +3,6 @@ package edu.montana.gsoc.msusel.plantuml;
 import edu.montana.gsoc.msusel.plantuml.action.export.*;
 import edu.montana.gsoc.msusel.plantuml.components.ButtonTabComponent;
 import edu.montana.gsoc.msusel.plantuml.components.PlantUMLTab;
-import edu.montana.gsoc.msusel.plantuml.export.*;
-import edu.montana.gsoc.msusel.plantuml.lexer.action.export.*;
 
 import javax.swing.*;
 import java.awt.*;
