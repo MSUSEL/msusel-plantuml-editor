@@ -1,5 +1,11 @@
 package edu.montana.gsoc.msusel.plantuml;
 
+import edu.montana.gsoc.msusel.plantuml.action.export.*;
+import edu.montana.gsoc.msusel.plantuml.components.ButtonTabComponent;
+import edu.montana.gsoc.msusel.plantuml.components.PlantUMLTab;
+import edu.montana.gsoc.msusel.plantuml.export.*;
+import edu.montana.gsoc.msusel.plantuml.lexer.action.export.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,11 +13,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 
-public class PlantUMLViewer extends JFrame {
+public class PlantUMLEditor extends JFrame {
 
     private JTabbedPane tabs;
 
-    public PlantUMLViewer() {
+    public PlantUMLEditor() {
         super("PlantUML Editor");
 
         createContentArea();
@@ -38,7 +44,7 @@ public class PlantUMLViewer extends JFrame {
                 if (c instanceof PlantUMLTab) {
                     PlantUMLTab tab = (PlantUMLTab) c;
                     if (tab.isDirty()) {
-                        int result = JOptionPane.showConfirmDialog(PlantUMLViewer.this, "The file " + tab.getTitle() + " has changed. Do you want to save it?", "Save File?", JOptionPane.YES_NO_CANCEL_OPTION);
+                        int result = JOptionPane.showConfirmDialog(PlantUMLEditor.this, "The file " + tab.getTitle() + " has changed. Do you want to save it?", "Save File?", JOptionPane.YES_NO_CANCEL_OPTION);
                         switch (result) {
                             case JOptionPane.YES_OPTION:
                                 //saveTab(tab);
@@ -54,7 +60,7 @@ public class PlantUMLViewer extends JFrame {
 
     public static void main(String args[]) {
 
-        JFrame frame = new PlantUMLViewer();
+        JFrame frame = new PlantUMLEditor();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         frame.pack();

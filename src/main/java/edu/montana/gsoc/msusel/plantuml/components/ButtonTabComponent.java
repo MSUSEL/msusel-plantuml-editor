@@ -1,4 +1,4 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.components;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;

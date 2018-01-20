@@ -1,10 +1,12 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action.export;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
+import edu.montana.gsoc.msusel.plantuml.action.AbstractExportAction;
 import net.sourceforge.plantuml.FileFormat;
 
 public class ExportHTML extends AbstractExportAction {
 
-    public ExportHTML(PlantUMLViewer owner) {
+    public ExportHTML(PlantUMLEditor owner) {
         super(owner, "Export HTML", "Exports UML as HTML", 'H');
     }
 

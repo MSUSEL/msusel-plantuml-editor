@@ -1,10 +1,12 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action.export;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
+import edu.montana.gsoc.msusel.plantuml.action.AbstractExportAction;
 import net.sourceforge.plantuml.FileFormat;
 
 public class ExportLaTeX extends AbstractExportAction {
 
-    public ExportLaTeX(PlantUMLViewer owner) {
+    public ExportLaTeX(PlantUMLEditor owner) {
         super(owner, "Export LaTeX", "Exports Latex version of UML", 'L');
     }
 

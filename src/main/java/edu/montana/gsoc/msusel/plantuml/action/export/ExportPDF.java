@@ -1,10 +1,12 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action.export;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
+import edu.montana.gsoc.msusel.plantuml.action.AbstractExportAction;
 import net.sourceforge.plantuml.FileFormat;
 
 public class ExportPDF extends AbstractExportAction {
 
-    public ExportPDF(PlantUMLViewer owner) {
+    public ExportPDF(PlantUMLEditor owner) {
         super(owner, "Export PDF", "Exports PDF version of UML", 'D');
     }
 

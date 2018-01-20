@@ -1,4 +1,4 @@
-package edu.montana.gsoc.msusel.patterns.plantuml;
+package edu.montana.gsoc.msusel.plantuml.lexer;
 
 import de.sciss.syntaxpane.Token;
 import de.sciss.syntaxpane.TokenType;

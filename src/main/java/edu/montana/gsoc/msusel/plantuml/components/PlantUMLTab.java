@@ -1,4 +1,4 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.components;
 
 import de.sciss.syntaxpane.DefaultSyntaxKit;
 import de.sciss.syntaxpane.syntaxkits.JavaSyntaxKit;

@@ -1,10 +1,12 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action.export;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
+import edu.montana.gsoc.msusel.plantuml.action.AbstractExportAction;
 import net.sourceforge.plantuml.FileFormat;
 
 public class ExportSVG extends AbstractExportAction {
 
-    public ExportSVG(PlantUMLViewer owner) {
+    public ExportSVG(PlantUMLEditor owner) {
         super(owner, "Exprot SVG", "Exports SVG images of UML", 'V');
     }
 

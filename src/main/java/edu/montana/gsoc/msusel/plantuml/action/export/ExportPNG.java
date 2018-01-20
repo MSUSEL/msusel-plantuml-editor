@@ -1,10 +1,12 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action.export;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
+import edu.montana.gsoc.msusel.plantuml.action.AbstractExportAction;
 import net.sourceforge.plantuml.FileFormat;
 
 public class ExportPNG extends AbstractExportAction {
 
-    public ExportPNG(PlantUMLViewer owner) {
+    public ExportPNG(PlantUMLEditor owner) {
         super(owner, "Export PNG", "Exports PNG image of UML", 'P');
     }
 

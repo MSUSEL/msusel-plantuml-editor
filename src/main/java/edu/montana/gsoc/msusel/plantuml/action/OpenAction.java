@@ -1,4 +1,6 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action;
+
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +12,9 @@ import java.util.List;
 
 public class OpenAction extends AbstractAction {
 
-    private PlantUMLViewer owner;
+    private PlantUMLEditor owner;
 
-    public OpenAction(PlantUMLViewer owner) {
+    public OpenAction(PlantUMLEditor owner) {
         this.owner = owner;
     }
 

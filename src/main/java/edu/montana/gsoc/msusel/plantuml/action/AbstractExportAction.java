@@ -1,5 +1,6 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
@@ -13,9 +14,9 @@ import java.io.IOException;
 
 public abstract class AbstractExportAction extends AbstractAction {
 
-    protected PlantUMLViewer owner;
+    protected PlantUMLEditor owner;
 
-    public AbstractExportAction(PlantUMLViewer owner, String title, String description, char mnemonic) {
+    public AbstractExportAction(PlantUMLEditor owner, String title, String description, char mnemonic) {
         super(title);
         //putValue(MNEMONIC_KEY, mnemonic);
         putValue(SHORT_DESCRIPTION, description);

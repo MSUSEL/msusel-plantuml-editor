@@ -1,10 +1,11 @@
-package edu.montana.gsoc.msusel.plantuml;
+package edu.montana.gsoc.msusel.plantuml.action.export;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
 import net.sourceforge.plantuml.FileFormat;
 
 public class ExportStdXMI extends ExportXMI {
 
-    public ExportStdXMI(PlantUMLViewer owner) {
+    public ExportStdXMI(PlantUMLEditor owner) {
         super(owner, "Export Standard XMI", "Exports Standard XMI", 'N');
     }
 
