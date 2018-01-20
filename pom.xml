@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>edu.montana.gsoc.msusel</groupId>
+        <artifactId>msusel-parent</artifactId>
+        <version>1.1.1</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>msusel-plantuml-editor</artifactId>
+    <packaging>jar</packaging>
+    <version>1.1.1</version>
+    <description>A Module containing the artifacts needed to experiment with design pattern issues.</description>
+    <url>http://MSUSEL.github.io</url>
+
+    <developers>
+        <developer>
+            <id>isaac.griffith</id>
+            <name>Isaac Griffith</name>
+            <email>isaacgriffith@gmail.com</email>
+            <organization>MSUSEL</organization>
+            <organizationUrl>https://msusel.github.io/</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <!-- SyntaxPane for PlantUML Editor -->
+        <dependency>
+            <groupId>de.sciss</groupId>
+            <artifactId>syntaxpane</artifactId>
+            <version>1.1.8</version>
+        </dependency>
+
+        <!-- Apache Commons Exec -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-exec</artifactId>
+            <version>1.3</version>
+        </dependency>
+
+        <!-- PlantUML -->
+        <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml</artifactId>
+            <version>1.2017.12</version>
+        </dependency>
+    </dependencies>
+</project>
