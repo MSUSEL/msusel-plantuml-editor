@@ -1,8 +1,19 @@
 # PlantUML Editor
 A Quick and Dirty PlantUML Editor
 
+![screenshot](doc/images/screenshot.png)
+
 ## Introduction
 This project produces 
+
+## Running
+Download the JAR and run either by double-clicking the JAR file or from the terminal as follows:
+
+```
+$ java -jar msusel-plantuml-editor_1.1.1.jar [filelist]
+```
+
+where the optional `filelist` is a list of text files containing PlantUML.
 
 ## MSUSEL Project dependencies
 This project depends on the following other MSUSEL subprojects:

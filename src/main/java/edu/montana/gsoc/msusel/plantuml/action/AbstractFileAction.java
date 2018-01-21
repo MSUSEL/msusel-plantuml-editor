@@ -22,45 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package edu.montana.gsoc.msusel.plantuml.action.export;
+package edu.montana.gsoc.msusel.plantuml.action;
 
 import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
-import edu.montana.gsoc.msusel.plantuml.action.AbstractExportAction;
-import net.sourceforge.plantuml.FileFormat;
-import org.kordamp.ikonli.fontawesome.FontAwesome;
-import org.kordamp.ikonli.swing.FontIcon;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
- * An action to export PDF from PlantUML
+ * A base class for FileActions
  *
  * @author Isaac Griffith
  * @version 1.1.1
  */
-public class ExportPDF extends AbstractExportAction {
+public abstract class AbstractFileAction extends AbstractAction {
+
+    protected PlantUMLEditor owner;
 
     /**
-     * Constructs a new ExportPDF Action for the given PlantUMLEditor
+     * Constructs a new FileAction attached to the provided PlantUMLEditor, with the given display name,
+     * the given short description, the given icon, the given mnemonic, and the given Shortcut Key.
      *
-     * @param owner Owner of this action
+     * @param owner       The owner of this action
+     * @param name        The displayed name of the action
+     * @param description The short description
+     * @param icon        The Icon displayed for this action
+     * @param mnemonic    The mnemonic for this action
+     * @param accelerator The shortcut key sequence for this action
      */
-    public ExportPDF(PlantUMLEditor owner) {
-        super(FontIcon.of(FontAwesome.FILE_PDF_O, 16, Color.BLACK), owner, "Export PDF", "Exports PDF version of UML", 'D');
-    }
-
-    @Override
-    protected String getFileDescription() {
-        return "PDF Files";
-    }
-
-    @Override
-    protected String getFileExtension() {
-        return "pdf";
-    }
-
-    @Override
-    protected FileFormat fileFormat() {
-        return FileFormat.PDF;
+    public AbstractFileAction(PlantUMLEditor owner, String name, String description, Icon icon, int mnemonic, KeyStroke accelerator) {
+        super(name, icon);
+        this.putValue(AbstractAction.MNEMONIC_KEY, mnemonic);
+        this.putValue(AbstractAction.ACCELERATOR_KEY, accelerator);
+        this.putValue(AbstractAction.ACCELERATOR_KEY, accelerator);
+        this.putValue(AbstractAction.SHORT_DESCRIPTION, description);
+        this.owner = owner;
     }
 }

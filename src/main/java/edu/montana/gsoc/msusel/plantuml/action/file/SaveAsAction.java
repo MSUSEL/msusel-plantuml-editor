@@ -22,45 +22,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package edu.montana.gsoc.msusel.plantuml.action.export;
+package edu.montana.gsoc.msusel.plantuml.action.file;
 
 import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
-import edu.montana.gsoc.msusel.plantuml.action.AbstractExportAction;
-import net.sourceforge.plantuml.FileFormat;
-import org.kordamp.ikonli.fontawesome.FontAwesome;
+import edu.montana.gsoc.msusel.plantuml.action.AbstractFileAction;
+import org.kordamp.ikonli.material.Material;
 import org.kordamp.ikonli.swing.FontIcon;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
- * An action to export PDF from PlantUML
+ * PlantUMLEditor Save As Action to save the currently selected Tab.
  *
  * @author Isaac Griffith
  * @version 1.1.1
  */
-public class ExportPDF extends AbstractExportAction {
+public class SaveAsAction extends AbstractFileAction {
 
     /**
-     * Constructs a new ExportPDF Action for the given PlantUMLEditor
+     * Constructs a new SaveAsAction for the provided PlantUMLEditor
      *
-     * @param owner Owner of this action
+     * @param owner Owner of this SaveAsAction
      */
-    public ExportPDF(PlantUMLEditor owner) {
-        super(FontIcon.of(FontAwesome.FILE_PDF_O, 16, Color.BLACK), owner, "Export PDF", "Exports PDF version of UML", 'D');
+    public SaveAsAction(PlantUMLEditor owner) {
+        super(owner,
+                "Save As...",
+                "Save currently selected tab as a new file",
+                FontIcon.of(Material.SAVE, 16, Color.BLACK),
+                KeyEvent.VK_A,
+                null);
     }
 
     @Override
-    protected String getFileDescription() {
-        return "PDF Files";
-    }
+    public void actionPerformed(ActionEvent e) {
 
-    @Override
-    protected String getFileExtension() {
-        return "pdf";
-    }
-
-    @Override
-    protected FileFormat fileFormat() {
-        return FileFormat.PDF;
     }
 }

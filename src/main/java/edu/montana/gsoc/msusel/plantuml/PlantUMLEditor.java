@@ -1,28 +1,93 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2018 Montana State University, Gianforte School of Computing,
+ * Software Engineering Laboratory
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package edu.montana.gsoc.msusel.plantuml;
 
+import com.google.common.collect.Lists;
 import edu.montana.gsoc.msusel.plantuml.action.export.*;
+import edu.montana.gsoc.msusel.plantuml.action.file.*;
+import edu.montana.gsoc.msusel.plantuml.action.help.AboutAction;
+import edu.montana.gsoc.msusel.plantuml.components.AboutDialog;
 import edu.montana.gsoc.msusel.plantuml.components.ButtonTabComponent;
 import edu.montana.gsoc.msusel.plantuml.components.PlantUMLTab;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
+/**
+ * A Quick and Dirty PlantUML Editor
+ *
+ * @author Isaac Griffith
+ * @version 1.1.1
+ */
+@Slf4j
 public class PlantUMLEditor extends JFrame {
 
+    /**
+     * The tab pane for each open document
+     */
     private JTabbedPane tabs;
+    /**
+     * The About Dialog
+     */
+    private AboutDialog aboutDialog;
 
+    /**
+     * Constructs a new PlantUML Editor
+     */
     public PlantUMLEditor() {
-        super("PlantUML Editor");
-
-        createContentArea();
-        constructMenuBar();
+        this(Lists.newArrayList());
     }
 
-    private void createContentArea() {
+    /**
+     * Constructs a new PlantUML Editor
+     */
+    public PlantUMLEditor(List<String> files) {
+        super("PlantUML Editor");
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        initComponents();
+        initMenuBar();
+        pack();
+        setSize(500, 500);
+        setLocationRelativeTo(null);
+
+        loadFiles(files);
+    }
+
+    /**
+     * Creates the content area
+     */
+    private void initComponents() {
         Container c = this.getContentPane();
         c.setLayout(new BorderLayout());
         c.add(tabs = new JTabbedPane(), BorderLayout.CENTER);
@@ -54,42 +119,32 @@ public class PlantUMLEditor extends JFrame {
                 }
             }
         });
+
+        aboutDialog = new AboutDialog(this);
     }
 
-    public static void main(String args[]) {
-
-        JFrame frame = new PlantUMLEditor();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        frame.pack();
-        frame.setSize(500, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    private void constructMenuBar() {
+    /**
+     * Constructs the menu bar
+     */
+    private void initMenuBar() {
         JMenuBar jmb = new JMenuBar();
 
         JMenu mnuFile = new JMenu("File");
-        JMenuItem jmiNew = new JMenuItem("New");
-        jmiNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openTab(null, null, "");
-            }
-        });
-        JMenuItem jmiOpen = new JMenuItem("Open");
-        JMenuItem jmiSave = new JMenuItem("Save");
-        JMenuItem jmiSaveAs = new JMenuItem("Save As...");
-        JMenuItem jmiExit = new JMenuItem("Exit");
-        jmiExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-
+        mnuFile.setMnemonic('F');
         JMenu export = new JMenu("Export");
+        export.setMnemonic('T');
+        JMenu mnuHelp = new JMenu("Help");
+        mnuHelp.setMnemonic('H');
+
+        mnuFile.add(new NewAction(this));
+        mnuFile.add(new OpenAction(this));
+        mnuFile.addSeparator();
+        mnuFile.add(new SaveAction(this));
+        mnuFile.add(new SaveAsAction(this));
+        mnuFile.add(export);
+        mnuFile.addSeparator();
+        mnuFile.add(new ExitAction(this));
+
         export.add(new ExportPNG(this));
         export.add(new ExportSVG(this));
         export.add(new ExportHTML(this));
@@ -99,16 +154,7 @@ public class PlantUMLEditor extends JFrame {
         export.add(new ExportStarXMI(this));
         export.add(new ExportArgoXMI(this));
 
-        mnuFile.add(jmiNew);
-        mnuFile.add(jmiOpen);
-        mnuFile.addSeparator();
-        mnuFile.add(jmiSave);
-        mnuFile.add(jmiSaveAs);
-        mnuFile.add(export);
-        mnuFile.addSeparator();
-        mnuFile.add(jmiExit);
-
-        JMenu mnuHelp = new JMenu("Help");
+        mnuHelp.add(new AboutAction(this));
 
         jmb.add(mnuFile);
         jmb.add(mnuHelp);
@@ -116,7 +162,11 @@ public class PlantUMLEditor extends JFrame {
         this.setJMenuBar(jmb);
     }
 
+    /**
+     * @return the UML Text from the currently selected tab
+     */
     public String getPlantUMLText() {
+        // TODO Should work with a document
         String text = "";
 
         if (tabs.getTabCount() > 0) {
@@ -126,6 +176,13 @@ public class PlantUMLEditor extends JFrame {
         return text;
     }
 
+    /**
+     * Opens a new tab for the given path, with the given title, and containing the given text
+     * // TODO  this should be constrained to a PlantUMLDocument
+     * @param path the path of the file
+     * @param title the title of the tab
+     * @param text the PlantUML text
+     */
     public void openTab(String path, String title, String text) {
         PlantUMLTab tab = null;
         if (path == null && title == null) {
@@ -137,4 +194,31 @@ public class PlantUMLEditor extends JFrame {
         tabs.setTabComponentAt(tabs.getTabCount() - 1, new ButtonTabComponent(tabs));
     }
 
+    /**
+     * show the about dialog
+     */
+    public void showAbout() {
+        aboutDialog.setVisible(true);
+    }
+
+    /**
+     * loads the files as tabs in the editor.
+     * @param paths List of file names to open
+     */
+    public void loadFiles(List<String> paths) {
+        paths.forEach(file -> {
+            Path path = Paths.get(file);
+            if (Files.exists(path) && Files.isRegularFile(path)) {
+                StringBuilder builder = new StringBuilder();
+                try {
+                    Files.readAllLines(path).forEach(line -> builder.append(line + "\n"));
+                } catch (IOException e) {
+                    log.error("Could not read file: " + path.toAbsolutePath().toString());
+                }
+                openTab(path.toAbsolutePath().toString(), path.getFileName().toString(), builder.toString());
+            } else {
+                log.warn("File " + file + " does not exist or is not a regular file.");
+            }
+        });
+    }
 }

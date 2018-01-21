@@ -12,6 +12,7 @@
     <artifactId>msusel-plantuml-editor</artifactId>
     <packaging>jar</packaging>
     <version>1.1.1</version>
+    <name>MSUSEL PlantUML Editor</name>
     <description>A Module containing the artifacts needed to experiment with design pattern issues.</description>
     <url>http://MSUSEL.github.io</url>
 
@@ -48,6 +49,44 @@
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
             <version>1.2017.12</version>
+        </dependency>
+
+        <!-- Kordamp Icon Packs -->
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-swing</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-material-pack</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-foundation-pack</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-fontawesome-pack</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.kordamp.ikonli</groupId>
+            <artifactId>ikonli-devicons-pack</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <!-- Markdown -->
+        <dependency>
+            <groupId>org.markdownj</groupId>
+            <artifactId>markdownj-core</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
 
@@ -98,7 +137,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>edu.montana.gsoc.msusel.plantuml.PlantUMLEditor</mainClass>
+                                    <mainClass>edu.montana.gsoc.msusel.plantuml.Main</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
