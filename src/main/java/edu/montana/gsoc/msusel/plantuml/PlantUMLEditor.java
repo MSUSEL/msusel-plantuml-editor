@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 import edu.montana.gsoc.msusel.plantuml.action.export.*;
 import edu.montana.gsoc.msusel.plantuml.action.file.*;
 import edu.montana.gsoc.msusel.plantuml.action.help.AboutAction;
+import edu.montana.gsoc.msusel.plantuml.action.toolbar.RenderAction;
 import edu.montana.gsoc.msusel.plantuml.components.AboutDialog;
 import edu.montana.gsoc.msusel.plantuml.components.ButtonTabComponent;
 import edu.montana.gsoc.msusel.plantuml.components.PlantUMLTab;
@@ -107,6 +108,7 @@ public class PlantUMLEditor extends JFrame {
     private void initComponents() {
         Container c = this.getContentPane();
         c.setLayout(new BorderLayout());
+        c.add(initToolBar(), BorderLayout.PAGE_START);
         c.add(tabs = new JTabbedPane(), BorderLayout.CENTER);
         tabs.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 
@@ -129,6 +131,19 @@ public class PlantUMLEditor extends JFrame {
         });
 
         aboutDialog = new AboutDialog(this);
+    }
+
+    private JToolBar initToolBar() {
+        JToolBar jtb = new JToolBar("PlantUML Edit");
+        jtb.setFloatable(false);
+        jtb.setRollover(true);
+        jtb.add(new NewAction(this));
+        jtb.add(new OpenAction(this));
+        jtb.addSeparator();
+        jtb.add(new CloseCurrentTabAction(this));
+        jtb.addSeparator();
+        jtb.add(new RenderAction(this));
+        return jtb;
     }
 
     /**
@@ -364,6 +379,12 @@ public class PlantUMLEditor extends JFrame {
      */
     public int getCurrentTabIndex() {
         return tabs.getSelectedIndex();
+    }
+
+    public void renderCurrentTab() {
+        PlantUMLTab tab = getCurrentTab();
+        if (tab != null)
+            tab.updateUML();
     }
 
     /**

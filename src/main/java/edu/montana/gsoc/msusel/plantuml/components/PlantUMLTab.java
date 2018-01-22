@@ -40,10 +40,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -122,6 +119,14 @@ public class PlantUMLTab extends JPanel implements DocumentListener {
 
         jepPlantUML.setFont(new Font("Courier", Font.PLAIN, 12));
         jepPlantUML.setText(text);
+        jepPlantUML.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_F5) {
+                    updateUML();
+                }
+            }
+        });
 
         JScrollPane jsp = new JScrollPane();
         jsp.setViewportView(jepPlantUML);
@@ -138,6 +143,8 @@ public class PlantUMLTab extends JPanel implements DocumentListener {
         pnlText.add(jsp, BorderLayout.CENTER);
 
         JButton btnRender = new JButton("Render");
+        btnRender.setMnemonic('R');
+        btnRender.setRolloverIcon(FontIcon.of(Material.PLAY_CIRCLE_OUTLINE, 20, Color.RED));
         btnRender.setIcon(FontIcon.of(Material.PLAY_CIRCLE_OUTLINE, 20, Color.BLACK));
         btnRender.setIconTextGap(5);
         btnRender.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -167,7 +174,10 @@ public class PlantUMLTab extends JPanel implements DocumentListener {
         });
     }
 
-    private void updateUML() {
+    /**
+     * Updates the uml in the viewer
+     */
+    public void updateUML() {
         try {
             ByteArrayOutputStream png = new ByteArrayOutputStream();
             String source = jepPlantUML.getText();
