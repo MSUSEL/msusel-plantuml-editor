@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+DIR=$(dirname $0)
+PUMLEDIT_HOME=$DIR/..
+$DIR/run-java edu.montana.gsoc.msusel.plantuml.Main

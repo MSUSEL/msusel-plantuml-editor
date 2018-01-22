@@ -24,7 +24,6 @@
  */
 package edu.montana.gsoc.msusel.plantuml;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +48,8 @@ public class Main {
 
     private static final Map<String, Pair<String, FileFormat>> FORMAT_EXT = Maps.newHashMap();
 
+    private static final String VERSION = "1.1.1";
+
     static {
         FORMAT_EXT.put("png", new Pair<>("png", FileFormat.PNG));
         FORMAT_EXT.put("svg", new Pair<>("svg", FileFormat.SVG));
@@ -72,6 +73,12 @@ public class Main {
                 .desc("prints this message")
                 .hasArg(false)
                 .build();
+        final Option version = Option.builder("v")
+                .required(false)
+                .longOpt("version")
+                .desc("prints version message")
+                .hasArg(false)
+                .build();
         final Option format = Option.builder("f")
                 .required(false)
                 .longOpt("format")
@@ -90,6 +97,7 @@ public class Main {
                 .build();
         options = new Options();
         Main.options.addOption(help);
+        Main.options.addOption(version);
         Main.options.addOption(format);
         Main.options.addOption(output);
     }
@@ -104,12 +112,17 @@ public class Main {
         String output = null;
         String format = "png";
 
-        if (line.getOptions().length == 0) {
-            processGUI(Lists.newArrayList());
-        }
+        boolean runGUI = false;
+        runGUI = line.getOptions().length == 0;
 
         if (line.hasOption('h')) {
             printHelp();
+            System.exit(0);
+        }
+
+        if (line.hasOption('v')) {
+            printVersion();
+            System.exit(0);
         }
 
         if (line.hasOption('o')) {
@@ -122,10 +135,11 @@ public class Main {
 
         List<String> input = line.getArgList();
 
-        if (output != null) {
-            processCLI(output, input, format);
-        } else {
+        if (runGUI || output == null) {
             processGUI(input);
+        }
+        else {
+            processCLI(output, input, format);
         }
     }
 
@@ -181,6 +195,10 @@ public class Main {
                 Main.options,
                 "\n(C) 2018, Montana State University, Gianforte School of Computing",
                 true);
+    }
+
+    static void printVersion() {
+        System.out.printf("pumledit %s [%s-%s]", VERSION, System.getProperty("os.name").toLowerCase(), System.getProperty("os.arch").toLowerCase());
     }
 
     /**

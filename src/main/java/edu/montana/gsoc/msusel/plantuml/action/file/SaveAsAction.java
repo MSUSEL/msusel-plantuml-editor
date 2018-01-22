@@ -57,6 +57,6 @@ public class SaveAsAction extends AbstractFileAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        owner.saveCurrentTabAs();
     }
 }

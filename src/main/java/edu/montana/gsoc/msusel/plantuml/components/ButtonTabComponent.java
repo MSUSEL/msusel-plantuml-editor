@@ -24,6 +24,12 @@
  */
 package edu.montana.gsoc.msusel.plantuml.components;
 
+import edu.montana.gsoc.msusel.plantuml.PlantUMLEditor;
+import edu.montana.gsoc.msusel.plantuml.action.file.CloseAllTabsAction;
+import edu.montana.gsoc.msusel.plantuml.action.file.CloseAllUnmodifiedTabsAction;
+import edu.montana.gsoc.msusel.plantuml.action.file.CloseCurrentTabAction;
+import edu.montana.gsoc.msusel.plantuml.action.file.CloseOtherTabsAction;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
@@ -31,10 +37,12 @@ import java.awt.event.*;
 
 public class ButtonTabComponent extends JPanel {
     private final JTabbedPane pane;
+    private final PlantUMLEditor owner;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    public ButtonTabComponent(PlantUMLEditor owner, final JTabbedPane pane) {
         //unset default FlowLayout' gaps
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        this.owner = owner;
         if (pane == null) {
             throw new NullPointerException("TabbedPane is null");
         }
@@ -60,6 +68,14 @@ public class ButtonTabComponent extends JPanel {
         add(button);
         //add more space to the top of the component
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+
+        JPopupMenu pop = new JPopupMenu();
+        pop.add(new CloseCurrentTabAction(owner));
+        pop.add(new CloseAllTabsAction(owner));
+        pop.add(new CloseAllUnmodifiedTabsAction(owner));
+        pop.add(new CloseOtherTabsAction(owner));
+
+        this.setComponentPopupMenu(pop);
     }
 
     private class TabButton extends JButton implements ActionListener {
@@ -85,22 +101,8 @@ public class ButtonTabComponent extends JPanel {
 
         public void actionPerformed(ActionEvent e) {
             int i = pane.indexOfTabComponent(ButtonTabComponent.this);
-            PlantUMLTab tab = (PlantUMLTab) pane.getComponentAt(i);
             if (i != -1) {
-                if (tab.isDirty()) {
-                    int result = JOptionPane.showConfirmDialog(pane, "The file " + tab.getTitle() + " has changed. Do you want to save it?", "Save File?", JOptionPane.YES_NO_CANCEL_OPTION);
-                    switch (result) {
-                        case JOptionPane.YES_OPTION:
-                            tab.save();
-                            pane.remove(i);
-                            break;
-                        case JOptionPane.NO_OPTION:
-                            pane.remove(i);
-                            break;
-                    }
-                } else {
-                    pane.remove(i);
-                }
+                owner.closeTab(i);
             }
         }
 

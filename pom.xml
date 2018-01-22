@@ -48,7 +48,7 @@
         <dependency>
             <groupId>net.sourceforge.plantuml</groupId>
             <artifactId>plantuml</artifactId>
-            <version>1.2017.12</version>
+            <version>1.2018.0</version>
         </dependency>
 
         <!-- Kordamp Icon Packs -->
@@ -87,6 +87,14 @@
             <groupId>org.markdownj</groupId>
             <artifactId>markdownj-core</artifactId>
             <version>0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bulenkov</groupId>
+            <artifactId>darcula</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/darcula.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -144,6 +152,26 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -163,6 +191,11 @@
         <repository>
             <id>snapshot</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>jcenter</name>
+            <url>http://jcenter.bintray.com</url>
         </repository>
     </repositories>
     <pluginRepositories>

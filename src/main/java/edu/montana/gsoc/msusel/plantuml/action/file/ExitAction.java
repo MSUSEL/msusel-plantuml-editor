@@ -59,6 +59,6 @@ public class ExitAction extends AbstractFileAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.exit(0);
+        owner.exit();
     }
 }

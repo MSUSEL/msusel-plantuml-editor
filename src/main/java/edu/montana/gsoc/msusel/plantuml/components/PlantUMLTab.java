@@ -24,6 +24,7 @@
  */
 package edu.montana.gsoc.msusel.plantuml.components;
 
+import com.google.common.collect.Lists;
 import de.sciss.syntaxpane.DefaultSyntaxKit;
 import de.sciss.syntaxpane.syntaxkits.JavaSyntaxKit;
 import lombok.Getter;
@@ -37,6 +38,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,10 +49,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 
 /**
  * A Tab which allows for both the display of rendered PlantUML as well as the editing of the underlying display
@@ -117,10 +116,10 @@ public class PlantUMLTab extends JPanel implements DocumentListener {
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         jepPlantUML = new JEditorPane();
-        jepPlantUML.getDocument().addDocumentListener(this);
         DefaultSyntaxKit kit = new JavaSyntaxKit();
-
         jepPlantUML.setEditorKit(kit);
+        jepPlantUML.getDocument().addDocumentListener(this);
+
         jepPlantUML.setFont(new Font("Courier", Font.PLAIN, 12));
         jepPlantUML.setText(text);
 
@@ -219,15 +218,15 @@ public class PlantUMLTab extends JPanel implements DocumentListener {
      */
     private void makeDirty() {
         dirty = true;
-        pane.getTabComponentAt(pane.getSelectedIndex()).setName("* " + title);
+        pane.setTitleAt(pane.getSelectedIndex(), "* " + title);
     }
 
     /**
      * Unsets the dirty flag and updates title of this Tab
      */
-    private void makeClean() {
+    public void makeClean() {
         dirty = false;
-        pane.getTabComponentAt(pane.getSelectedIndex()).setName(title);
+        pane.setTitleAt(pane.getSelectedIndex(), title);
     }
 
     /**
@@ -268,7 +267,27 @@ public class PlantUMLTab extends JPanel implements DocumentListener {
         makeClean();
     }
 
+    /**
+     * Logic to save the underlying document with a new file name
+     */
     public void saveAs() {
+        JFileChooser jfc = new JFileChooser();
+        jfc.setFileFilter(new FileNameExtensionFilter("Plant UML Specification", "puml", "plt"));
+        int result = jfc.showSaveDialog(this);
 
+        if (result == JFileChooser.APPROVE_OPTION) {
+            Path p = Paths.get(jfc.getSelectedFile().getAbsolutePath());
+
+            try {
+                Files.deleteIfExists(p);
+
+                Files.write(p, Lists.newArrayList(jepPlantUML.getText()), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+
+                title = p.getFileName().toString();
+                makeClean();
+            } catch (IOException e) {
+                log.error(e.getMessage());
+            }
+        }
     }
 }
